@@ -1,57 +1,28 @@
 import fp from 'fastify-plugin'
-import { FastifyPluginAsync, FastifyRequest } from 'fastify'
-import { Post } from '@prisma/client'
-import { prisma } from '../../clients/prisma'
+import { FastifyPluginAsync } from 'fastify'
 
-export type GetPostsPayload = {
-  data: Post[]
-}
-type GetPostsRequest = FastifyRequest<{ Reply: GetPostsPayload }>
+import { get_list_posts } from './get_list_posts'
+export * from './get_list_posts'
 
-export type GetPostPayload = {
-  data: Post | null
-}
-type GetPostRequest = FastifyRequest<{
-  Params: {
-    postId: string
-  },
-  Reply: GetPostPayload
-}>
+import { get_post } from './get_post'
+export * from './get_post'
 
-export type CreatePostInput = {
-  title: string
-  content: string
-}
-export type CreatePostPayload = {
-  data: Post
-}
-type CreatePostRequest = FastifyRequest<{
-  Body: CreatePostInput
-  Reply: CreatePostPayload
-}>
+import { create_post } from './create_post'
+export * from './create_post'
 
 export const post: FastifyPluginAsync = fp(async app => {
-  app.get('/posts', async (_request: GetPostsRequest, reply) => {
-    const posts = await prisma.post.findMany()
-    reply.send({ data: posts })
-  })
-  
-  app.get('/posts/:postId', async (request: GetPostRequest, reply) => {
-    const post = await prisma.post.findUnique({
-      where: { id: request.params.postId }
-    })
-    reply.send({ data: post })
-  })
-  
-  app.post('/posts', async (request: CreatePostRequest, reply) => {
-    const post = await prisma.post.create({
-      data: request.body
-    })
-
-    reply.send({
-      data: post
-    })
+  app.addSchema({
+    $id: 'post',
+    type: 'object',
+    properties: {
+      id: { type: 'string' },
+      title: { type: 'string' },
+      content: { type: 'string' },
+    }
   })
 
+  app.register(get_list_posts)
+  app.register(get_post)
+  app.register(create_post)
   // update, delete
 })

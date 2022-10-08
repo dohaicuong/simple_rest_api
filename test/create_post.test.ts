@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { app } from '../src/app'
-import { prisma } from '../src/clients/prisma'
+import prisma from '../src/clients/prisma'
 import { CreatePostInput, CreatePostPayload } from '../src/services/post'
 
 describe('POST /posts', () => {
@@ -19,6 +19,7 @@ describe('POST /posts', () => {
       .post('/posts')
       .body(input)
 
+      
     const body = res.json() as CreatePostPayload
     
     expect(res.statusCode).toBe(200)

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { app } from '../src/app'
-import { prisma } from '../src/clients/prisma'
+import prisma from '../src/clients/prisma'
 import { GetPostPayload } from '../src/services/post'
 
 describe('GET /posts/:id', () => {
@@ -10,7 +10,7 @@ describe('GET /posts/:id', () => {
 
   it('should return post with id', async () => {
     const created_post = await prisma.post.create({
-      data: { title: '1st post', content: 'bla bla' }
+      data: { title: 'post', content: 'bla bla' }
     })
 
     const res = await app
