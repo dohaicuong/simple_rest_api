@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 
-import { post } from './domains/post'
+import { post } from './services/post'
 
 export const app = fastify()
 

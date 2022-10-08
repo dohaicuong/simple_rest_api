@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { app } from '../src/app'
 import { prisma } from '../src/clients/prisma'
-import { GetPostsPayload } from '../src/domains/post'
+import { GetPostsPayload } from '../src/services/post'
 
 describe('GET /posts', () => {
   beforeEach(async () => {
